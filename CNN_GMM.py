@@ -82,12 +82,27 @@ class GMM_NLL:
     """
     """
 
-    def __init__(self, input_tensor, sess):
+    def __init__(self, input_tensor, K, dim, sess):
         """
         """
 
         self.input = input_tensor
         self.sess = sess
+
+        self.K = K
+        self.dim = dim
+
+        # Definition of GMM components 
+        self.means = tf.placeholder(tf.float32, (self.K, self.dim))
+        self.covariances = tf.placeholder(tf.float32, (self.K, self.dim, self.dim))
+        self.weights = tf.placeholder(tf.float32, (self.K))
+
+        cov_inv = tf.matrix_inverse(self.covariances)
+        cov_det = tf.matrix_determinant(self.covariances)
+
+
+
+        self.NLL = None
 
 
 class NN:
